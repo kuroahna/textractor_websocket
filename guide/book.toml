@@ -1,0 +1,9 @@
+[book]
+authors = ["kuroahna"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Textractor WebSocket"
+
+[output.html]
+git-repository-url = "https://github.com/kuroahna/textractor_websocket"

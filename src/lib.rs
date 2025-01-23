@@ -17,17 +17,20 @@ fn start_websocket_server() -> websocket::ServerStarted {
     websocket::Server::new(SocketAddr::from(([0, 0, 0, 0], 6677))).start()
 }
 
+// Disable because this is a false positive clippy lint
+// https://github.com/rust-lang/rust-clippy/issues/3045
+//
+// And adding attributes to expressions is not yet supported
+// https://github.com/rust-lang/rust/issues/15701
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[no_mangle]
 pub extern "C" fn OnNewSentence(
     sentence: *const u16,
     sentence_info: *const InfoForExtension,
 ) -> *const u16 {
-    let sentence_as_cstring: U16CString;
     // SAFETY: Constructing a  `U16Cstring` from `*const u16` is safe because
     // Textractor should return a valid pointer when this function is called
-    unsafe {
-        sentence_as_cstring = U16CString::from_ptr_str(sentence);
-    }
+    let sentence_as_cstring = unsafe { U16CString::from_ptr_str(sentence) };
 
     // We cannot assume that the sentence will always be a valid UTF-8 string
     // because the text hook might be bad and contain random bytes

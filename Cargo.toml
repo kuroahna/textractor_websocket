@@ -2,11 +2,22 @@
 name = "textractor_websocket"
 version = "0.1.0"
 edition = "2021"
+authors = ["kuroahna"]
+repository = "https://github.com/kuroahna/textractor_websocket"
+homepage = "https://github.com/kuroahna/textractor_websocket"
+license = "MIT OR Apache-2.0"
 
 [lib]
 crate-type = ["cdylib"]
 
+[profile.release]
+lto = true
+codegen-units = 1
+
 [dependencies]
 widestring = { version = "1.0.2", default-features = false, features = ["std"] }
-winapi = { version = "0.3.9", default-features = false, features = ["winnt", "minwindef"] }
+winapi = { version = "0.3.9", default-features = false, features = [
+  "winnt",
+  "minwindef",
+] }
 ws = { version = "0.9.2", default-features = false }

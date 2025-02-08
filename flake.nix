@@ -252,6 +252,7 @@
           checks = self.checks.${system};
 
           packages = with pkgs; [
+            mdbook
             rust-analyzer
           ];
 

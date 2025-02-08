@@ -1,0 +1,51 @@
+name: "Build artifacts"
+on:
+  push:
+    branches:
+      - "master"
+  workflow_dispatch:
+
+jobs:
+  build_textractor_websocket_x64:
+    name: Build Textractor WebSocket x64
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@v16
+
+    - name: Run the Magic Nix Cache
+      uses: DeterminateSystems/magic-nix-cache-action@v8
+
+    - name: Build Textractor WebSocket x64
+      run: |
+        nix build --print-build-logs
+
+    - name: Upload DLL
+      uses: actions/upload-artifact@v4
+      with:
+        name: textractor_websocket_x64.dll
+        path: result/lib/textractor_websocket_x64.dll
+
+  build_textractor_websocket_x86:
+    name: Build Textractor WebSocket x86
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@v16
+
+    - name: Run the Magic Nix Cache
+      uses: DeterminateSystems/magic-nix-cache-action@v8
+
+    - name: Build Textractor WebSocket x86
+      run: |
+        nix build --print-build-logs .#x86
+
+    - name: Upload DLL
+      uses: actions/upload-artifact@v4
+      with:
+        name: textractor_websocket_x86.dll
+        path: result/lib/textractor_websocket_x86.dll

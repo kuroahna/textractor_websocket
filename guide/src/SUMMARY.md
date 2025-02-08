@@ -4,3 +4,7 @@
 
 - [Installation](guide/installation.md)
 - [Usage](guide/usage.md)
+
+---
+
+[Changelog](CHANGELOG.md)

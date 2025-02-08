@@ -1,15 +1,25 @@
-use std::net::SocketAddr;
+use std::ffi::c_ulong;
 use std::sync::OnceLock;
+use std::{ffi::c_void, net::SocketAddr};
 
 use widestring::U16CString;
-use winapi::shared::minwindef::{BOOL, DWORD, HINSTANCE, LPVOID, TRUE};
-use winapi::um::winnt::DLL_PROCESS_ATTACH;
+use windows_sys::Win32::{
+    Foundation::{BOOL, HINSTANCE, TRUE},
+    System::SystemServices::DLL_PROCESS_ATTACH,
+};
 
 use crate::textractor::{CurrentSelect, InfoForExtension, SentenceInfo, TextNumber};
 
 mod mio_channel;
 mod textractor;
 mod websocket;
+
+// windows-rs does not define DWORD and LPVOID
+// https://github.com/microsoft/windows-rs/issues/881
+#[allow(clippy::upper_case_acronyms)]
+type DWORD = c_ulong;
+#[allow(clippy::upper_case_acronyms)]
+type LPVOID = *mut c_void;
 
 static SERVER: OnceLock<websocket::ServerStarted> = OnceLock::new();
 

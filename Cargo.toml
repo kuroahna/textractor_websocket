@@ -23,7 +23,6 @@ tungstenite = { version = "0.26.1", default-features = false, features = [
   "handshake",
 ] }
 widestring = { version = "1.1.0", default-features = false, features = ["std"] }
-winapi = { version = "0.3.9", default-features = false, features = [
-  "winnt",
-  "minwindef",
+windows-sys = { version = "0.59.0", default-features = false, features = [
+  "Win32_System_SystemServices",
 ] }

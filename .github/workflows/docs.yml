@@ -1,0 +1,42 @@
+name: "Deploy docs"
+on:
+  push:
+    branches:
+      - "master"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy docs
+    runs-on: ubuntu-24.04
+    env:
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@v16
+
+    - name: Run the Magic Nix Cache
+      uses: DeterminateSystems/magic-nix-cache-action@v8
+
+    - name: Build docs
+      run: |
+        mkdir output
+        nix build --print-build-logs .#docs
+        rsync -r -L ./result/ ./output
+
+    - name: Deploy docs
+      working-directory: output
+      run: |
+        git init
+        git config user.name "GitHub Actions"
+        git config user.email "github-actions-bot@users.noreply.github.com"
+        git branch -M gh-pages
+        git add .
+        git commit -m "Deploying site"
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+        echo "${{ secrets.DEPLOY_KEY }}" | tr -d '\r' | ssh-add -
+        git push --force "git@github.com:${GITHUB_REPOSITORY}.git" gh-pages

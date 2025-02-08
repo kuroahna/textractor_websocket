@@ -1,4 +1,4 @@
-# textractor_websocket
+# Textractor WebSocket
 
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/kuroahna)
 
@@ -22,10 +22,10 @@ Ensure you have Rust installed. The installation instructions can be found
 DLL with
 
 ```bash
-# For x64
+# For x86
 cargo build --release --target i686-pc-windows-gnu
 
-# For x86
+# For x64
 cargo build --release --target x86_64-pc-windows-gnu
 ```
 
@@ -70,7 +70,7 @@ Textractor
 ## Usage
 
 After installing the extension, when you start Textractor and have selected a
-text thread, Textractor will automatically start the server at
+text thread, Textractor will automatically start the server and is available at
 `ws://localhost:6677`
 
 You will need a WebSocket client such as

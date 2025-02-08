@@ -1,7 +1,7 @@
 # Usage
 
 After installing the extension, when you start Textractor and have selected a
-text thread, Textractor will automatically start the server at
+text thread, Textractor will automatically start the server and is available at
 `ws://localhost:6677`
 
 You will need a WebSocket client such as

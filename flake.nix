@@ -224,6 +224,28 @@
           {
             textractor_websocket = textractor_websocket;
           };
+
+        docs = pkgs.stdenv.mkDerivation (finalAttrs: {
+          pname = "textractor_websocket_docs";
+          version = crossCompileForX64.textractor_websocket.version;
+          strictDeps = true;
+
+          src = pkgs.lib.fileset.toSource {
+            root = ./.;
+            fileset = pkgs.lib.fileset.unions [
+              ./CHANGELOG.md
+              ./guide
+            ];
+          };
+
+          nativeBuildInputs = (with pkgs; [ mdbook ]);
+
+          buildPhase = ''
+            mkdir -p $out
+            mdbook build guide
+            cp -r guide/book/* $out
+          '';
+        });
       in
       {
         formatter = pkgs.nixfmt-rfc-style;
@@ -273,6 +295,8 @@
           # https://github.com/rust-lang/rust-analyzer/issues/15046
           RUSTC_BOOTSTRAP = 1;
         };
+
+        packages.docs = docs;
       }
     );
 }

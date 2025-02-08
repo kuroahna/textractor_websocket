@@ -100,6 +100,9 @@
                 '';
 
                 preBuild = fixLinkErrors;
+                postInstall = ''
+                  cp $out/lib/textractor_websocket.dll $out/lib/textractor_websocket_x64.dll
+                '';
 
                 cargoExtraArgs = "--frozen --target ${targetTriple} --workspace";
                 CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER = "wine64";
@@ -211,6 +214,10 @@
                 '';
                 cargoTestCommand = "cargo test -Zbuild-std=std,panic_abort --profile release --frozen --target i686-pc-windows-gnu.json --workspace";
                 CARGO_TARGET_I686_PC_WINDOWS_GNU_RUNNER = "wine";
+
+                postInstall = ''
+                  cp $out/lib/textractor_websocket.dll $out/lib/textractor_websocket_x86.dll
+                '';
               }
             );
           in

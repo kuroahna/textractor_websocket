@@ -7,13 +7,14 @@ use winapi::um::winnt::DLL_PROCESS_ATTACH;
 
 use crate::textractor::{CurrentSelect, InfoForExtension, SentenceInfo, TextNumber};
 
+mod mio_channel;
 mod textractor;
 mod websocket;
 
 static SERVER: OnceLock<websocket::ServerStarted> = OnceLock::new();
 
 fn start_websocket_server() -> websocket::ServerStarted {
-    println!("Starting websocket server at `0.0.0.0:6677`");
+    println!("Starting WebSocket server at `0.0.0.0:6677`");
     websocket::Server::new(SocketAddr::from(([0, 0, 0, 0], 6677))).start()
 }
 
@@ -42,7 +43,7 @@ pub extern "C" fn OnNewSentence(
         if let TextNumber::TextThread(_) = text_number {
             SERVER
                 .get_or_init(start_websocket_server)
-                .send_message(sentence_as_lossy_string);
+                .send_message(sentence_as_lossy_string.into());
         }
     }
 
@@ -58,7 +59,7 @@ pub extern "system" fn DllMain(
     if fdw_reason == DLL_PROCESS_ATTACH {
         SERVER
             .set(start_websocket_server())
-            .unwrap_or_else(|_| panic!("Websocket server should not have started yet"));
+            .unwrap_or_else(|_| panic!("WebSocket server should not have started yet"));
     }
 
     TRUE

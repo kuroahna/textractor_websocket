@@ -25,7 +25,7 @@ jobs:
     - name: Upload DLL
       uses: actions/upload-artifact@v4
       with:
-        name: textractor_websocket_x64.dll
+        name: textractor_websocket_x64
         path: result/lib/textractor_websocket_x64.dll
 
   build_textractor_websocket_x86:
@@ -47,5 +47,5 @@ jobs:
     - name: Upload DLL
       uses: actions/upload-artifact@v4
       with:
-        name: textractor_websocket_x86.dll
+        name: textractor_websocket_x86
         path: result/lib/textractor_websocket_x86.dll
